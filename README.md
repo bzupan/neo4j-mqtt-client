@@ -1,58 +1,80 @@
-# Neo4j MqTT v5 Client
-Noo4j branch: 5.x  
+# Neo4j MQTT v5 Client
+Neo4j branch: 5.x  
 root: https://github.com/bzupan/neo4j-mqtt-client 
 
-Neo4j Graph Database MqTT v5 Client Functions and Procedures:
-- Publishing MqTT Messages from Neo4j Graph Database
-- Subscribing to and Processing MqTT Messages in Neo4j Graph Database
+Introduction
+
+The Neo4j MQTT v5 Client is a powerful bridge between Neo4j Graph Databases and the Internet of Things (IoT) ecosystem. This client facilitates seamless communication between a Neo4j database and IoT networks by enabling the database to process, stream, and execute Cypher queries based on incoming MQTT messages. By leveraging the MQTT version 5 protocol, this client empowers Neo4j databases to interact bidirectionally with IoT networks, allowing for real-time data processing, event streaming, and efficient execution of database operations.
+
+With functionalities such as publishing MQTT messages from within the database, subscribing to and processing incoming messages, and managing connections to MQTT brokers, this client opens doors to a wide array of IoT-driven applications within the Neo4j environment. 
+
+Through this seamless integration, users can harness the power of Neo4j's graph-based data structure to derive insights, perform complex data manipulations, and drive actions based on real-time IoT data, thereby bridging the gap between IoT ecosystems and graph databases.
+
+Some of the possible applications:
+- Neo4j database is listening to the IoT messages and runs Cypher queries upon received data,
+- Neo4j database can stream database events via the IoT network,
+- Neo4j database Cypher queries can be executed using IoT network,
+- ...
+
+Neo4j Graph Database MQTT v5 Client Functions and Procedures:
+- Publishing MQTT Messages from Neo4j Graph Database
+- Subscribing to and Processing MQTT Messages in the Neo4j Graph Database
 
 ## Notes
-- Utilizes the HiveMQ MqTT Client for Java (https://www.hivemq.com/article/mqtt-client-library-enyclopedia-hivemq-mqtt-client/)
-- Tested with Eclipse Mosquitto 2.0.18 MqTT Broker  (https://mosquitto.org/)
-- Tested with Neo4j 5.13 Community Eddition Graph Database
-- Requires Neo4j 5 APOC plugin (APOC 5.x neeeds to be installed)
-- MqTT version 5 only 
+- Utilizes the [HiveMQ MQTT Client](https://www.hivemq.com/article/mqtt-client-library-enyclopedia-hivemq-mqtt-client/) for Java 
+- Tested with [Eclipse Mosquitto 2.0.18](https://mosquitto.org/) MQTT Broker
+- Tested with [Neo4j 5.13 Community Edition](https://neo4j.com/deployment-center/) Graph Database
+- Based on excelent [neo4j-procedure-template](https://github.com/neo4j-examples/neo4j-procedure-template/)
+- Requires [Neo4j 5 APOC](https://github.com/neo4j/apoc) plugin ([APOC 5.x](https://github.com/neo4j/apoc/releases) neeeds to be installed)
+- [MQTT version 5](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html) only 
 - Currently only TCP transfer protocol implemented
 - [Node RED test flows](test/node-red/node-red_neo4jMqttClientTests.json) are prepered for examles demonstrated in this README
+- Versioning - first two version numbers match Neo4j and APOC release - you need to use the plugin version to match APOC and Neo4j version
 
-# Managing Neo4j MqTT Clients and Connections
-The process involves registering the Neo4j MqTT broker client and establishing a connection to the MqTT broker.
-Once the client is connected, MqTT messages can be published or subscribed to.
+# Managing Neo4j MQTT Clients and Connections
+Effectively managing Neo4j MQTT clients involves a series of steps, from registering the client within the Neo4j environment to establishing a stable connection with the MQTT broker. Once this connection is established, the Neo4j MQTT client is primed to interact seamlessly with the MQTT broker.
 
-Neo4j MqTT broker client functions
-- connectBroker, 
-- listBrokers and 
-- disconnectBroker.
+The initial step revolves around the registration of the Neo4j MQTT broker client within the Neo4j database. This process lays the groundwork for establishing a connection with the MQTT broker. Once registered, the client is ready to engage in bidirectional communication.
 
-## Register Neo4j MqTT Client and Connect the MqTT Broker
-CYPHER query
+The Neo4j MQTT broker client provides three primary functions:
+- connectBroker: Initiates the connection between the Neo4j database and the MQTT broker. This function sets the foundation for the exchange of MQTT messages.
+- listBrokers: Offers a listing of the registered MQTT brokers within the Neo4j environment. This function enables easy access to broker information for management and monitoring purposes.
+- disconnectBroker: Facilitates the termination of the connection between the Neo4j database and the MQTT broker. This function ensures the controlled disconnection of the client, maintaining system integrity.
+
+Utilizing MQTT Messaging
+Upon successful connection establishment, the Neo4j MQTT client gains the capability to interact with MQTT messages. These messages can be both published from the Neo4j database to the MQTT broker or subscribed to, allowing the database to receive and process incoming messages from the broker.
+
+## Register Neo4j MQTT Client and Connect the MQTT Broker
+Cypher query
 ```cypher
 RETURN mqtt.connectBroker(
-    'neo4jMqttClientId',          // Unique ID of the MqTT Client
+    'neo4jMqttClientId',          // Unique ID of the MQTT Client
     {
-        serverHost:'localhost',   // MqTT Broker IP Address
-        serverPort:1883           // MqTT Broker Port
+        serverHost:'localhost',   // MQTT Broker IP Address
+        serverPort:1883           // MQTT Broker Port
     }
 )
 ```
 
-## List Neo4j MqTT Clients/Connections and Show Details
-CYPHER query
+## List Neo4j MQTT Clients/Connections and Show Details
+Cypher query
 ```cypher
 RETURN mqtt.listBrokers()
 ```
 
-## Disconnect MqTT Broker and Unregister Neo4j MqTT Client
-CYPHER query
+## Disconnect MQTT Broker and Unregister Neo4j MQTT Client
+Cypher query
 ```cypher
 RETURN mqtt.disconnectBroker(
-  'neo4jMqttClientId'           // Neo4j MqTT Client ID to Disconnect
+  'neo4jMqttClientId'           // Neo4j MQTT Client ID to Disconnect
 )
 ```
-# Generate AES-CBC Encryption Key (key) and Initialization Vector (iv)
-Neo4j MqTT broker client supports AES-CBC payload encription. Base64 encoded key and iv is needed. Utility function "generateAesCbcKeyIv" will generate 256 AES-CBC key and iv for symetric encription - see examples of using provided keys.
+# Generate AES-CBC Encryption Key (key) and Initialization Vector (IV)
+The Neo4j MQTT broker client offers support for AES-CBC payload encryption, ensuring secure data transmission. To enable this encryption, AES-CBC key and initialization vector (IV) in base64 encoded format are required.
 
-CYPHER query
+The utility function, generateAesCbcKeyIv, has been designed specifically for this purpose. Upon invocation, this function generates the necessary AES-CBC key and IV, ensuring secure symmetric encryption. Please see examples of decripting and encripting MQTT payloads using provided keys.
+
+Cypher query
 ```cypher
 RETURN mqtt.generateAesCbcKeyIv()
 ```
@@ -67,23 +89,27 @@ Sample Response
   "ivHex": "ec208f57f33f05032c336735cd6be9b0a14403e7407aa30815e592b3549f923c"
 }
 ```
-# Publish MqTT Messages Using Neo4j MqTT Client
-Neo4j MqTT CYPHER function and procedure for publishing MqTT v5 messages:
-- publishMessagefunction - for publishing Neo4j objects (map, node and relation). If list is provided MqTT message will be send for each element - see examples!
-- publishGrph procedure - run CYPHER query and publish Neo4j graph. Graph will be exported to JSON nodes relationships object - see examples!
+# Publishing MQTT Messages with the Neo4j MQTT Client
+The Neo4j MQTT client offers specialized Cypher functions and procedures tailored for publishing MQTT v5 messages seamlessly. These functions and procedures are designed to facilitate the efficient transmission of data from the Neo4j database to MQTT v5 networks.
+
+- publishMessage Function  
+The publishMessage function serves as a versatile tool for publishing Neo4j objects, such as maps, nodes, and relations, as MQTT messages. Notably, when provided with a list, this function dynamically sends MQTT messages for each element within the list. This functionality ensures a flexible and scalable approach to message transmission. Explore the provided examples to grasp the diverse applications and adaptability of this function.
+
+- publishGrph Procedure 
+The publishGrph procedure operates by executing Cypher queries within the Neo4j environment and subsequently publishing the resulting Neo4j graph as an MQTT message. This procedure efficiently exports the Neo4j graph data to a JSON-based nodes and relationships object, which is then transmitted over MQTT. Refer to the examples provided to gain insights into executing queries and publishing Neo4j graphs effectively.
 
 ## Neo4j publishMessage Function
-Following CYPHER query will publish simple MqTT message.
-CYPHER query
+Following Cypher query will publish simple MQTT message.
+Cypher query
 ```cypher
-// --- publish simple map object "{message:123}" to "mqtt/topic/path" topic utilazing 'neo4jMqttClientId' Neo4j MqTT Client 
+// --- publish simple map object "{message:123}" to "mqtt/topic/path" topic using  'neo4jMqttClientId' Neo4j MQTT Client 
 RETURN mqtt.publishMessage(
-    'neo4jMqttClientId',        // Neo4j MqTT Client ID
+    'neo4jMqttClientId',        // Neo4j MQTT Client ID
     'mqtt/topic/path',          // topic to publish to
     {message:123}               // payload
 )
 ```
-Response to CYPHER query
+Response to Cypher query
 ```json
 {
   "topic": "mqtt/topic/path",
@@ -92,10 +118,10 @@ Response to CYPHER query
   },
   "status": "OK",
   "neo4jMqttClientId": "neo4jMqttClientId",
-  "statusMessage": "MqTT Publish OK"
+  "statusMessage": "MQTT Publish OK"
 }
 ```
-Received MqTT Message on 'mqtt/topic/path' 
+Received MQTT Message on 'mqtt/topic/path' 
 ```json
 {
   "topic": "mqtt/topic/path",
@@ -114,25 +140,25 @@ Received MqTT Message on 'mqtt/topic/path'
 
 ```
 
-![CYPHER MqTT publish](img/cypher-mqtt-publish.PNG)
+![Cypher MQTT Publish](img/cypher-mqtt-publish.PNG)
 
-![CYPHER MqTT publish receive](img/cypher-mqtt-publish-received.PNG)  
+![Cypher MQTT Publish Receive](img/cypher-mqtt-publish-received.PNG)  
 
-Following CYPHER query will publish simple MqTT message adding responseTopic and correlationData options to the MqTT v5 message
-CYPHER query
+Following Cypher query will publish simple MQTT message adding responseTopic and correlationData options to the MQTT v5 message.  
+Cypher query
 ```cypher
-// --- Publish MqTT Message with MqTT v5 options "responseTopic" and "correlationData"
+// --- Publish MQTT Message with MQTT v5 options "responseTopic" and "correlationData"
 RETURN mqtt.publishMessage(
     'neo4jMqttClientId', 
     'mqtt/topic/path', 
     {message:123}, 
-    {                                              // MqTT v5 options map
-        responseTopic:"mqtt/topic/path/response",
+    {                                              // MQTT v5 options map
+        responseTopic:"mqtt/topic/path/response",  
         correlationData:"messageId-123" 
     }
 )
 ```
-Received MqTT Message on 'mqtt/topic/path' 
+Received MQTT Message on 'mqtt/topic/path' 
 ```json
 {
   "topic": "mqtt/topic/path",
@@ -166,24 +192,24 @@ Received MqTT Message on 'mqtt/topic/path'
 }
 ```
 
-AES-CBC payload encription is possible with additional paramateres in the options map.  
-Message will be published as Base6 encoded string - all userProps will be remowed from the message!
+AES-CBC payload encription is enabled if additional paramateres are provided in the options map.  
+Message will be published as base6 encoded string - all userProperties will be remowed from the message!
 
-CYPHER query
+Cypher query
 ```cypher
-// --- AES-CBC encript MqTT payload and publish message to the mqtt/topic/pathEncripted topic
+// --- AES-CBC encript MQTT payload and publish message to the mqtt/topic/pathEncripted topic
 RETURN mqtt.publishMessage(
     'neo4jMqttClientId', 
     'mqtt/topic/pathEncripted', 
     {message:123}, 
     {
         encription: "aes-cbc",                    // currently only aes-cbc is supported
-        ivBase64: "FnAxDoCHpgHkrZr3jRGmbA==",     // Base64 encoded iv 
-        keyBase64: "2ggLKL4wxTwmZQ8kPMCT8A=="     // Base64 encoded key
+        ivBase64: "FnAxDoCHpgHkrZr3jRGmbA==",     // Base64 encoded IV  
+        keyBase64: "2ggLKL4wxTwmZQ8kPMCT8A=="     // Base64 encoded AES-CBC key
     }  
 )
 ```
-Received MqTT Message on 'mqtt/topic/pathEncripted' 
+Received MQTT Message on 'mqtt/topic/pathEncripted' 
 ```json
 {
   "topic": "mqtt/topic/pathEncripted",
@@ -192,9 +218,12 @@ Received MqTT Message on 'mqtt/topic/pathEncripted'
   "retain": false
 }
 ```
+![Cypher MQTT Publish Encripted](img/cypher-mqtt-publish-encripted.PNG)
 
-We can pass node or relation to the message - node / relation will be pubished as JSON - see examples
-CYPHER query with node as payload
+![Cypher MQTT Publish Receive Encripted](img/cypher-mqtt-publish-received-encripted.PNG)  
+
+We can pass node or relation to the message - node / relation will be pubished as JSON object - see examples.  
+Cypher query with node as payload
 ```cypher
 // --- publish single node as JSON document to 'mqtt/topic/path'
 MERGE (s:MqttTestNode {someProp:"startNode"})-[l:MQTT_TEST {someProp:"linkProp"}]->(e:MqttTestNode {someProp:"endNode"})
@@ -204,7 +233,7 @@ RETURN mqtt.publishMessage(
   s
 )
 ```
-Received MqTT Message on 'mqtt/topic/path' 
+Received MQTT Message on 'mqtt/topic/path' 
 ```json
 {
   "topic": "mqtt/topic/path",
@@ -229,7 +258,7 @@ Received MqTT Message on 'mqtt/topic/path'
   }
 }
 ```
-CYPHER query with relation as payload
+Cypher query with relation as payload
 ```cypher
 // --- publish single node as JSON document to 'mqtt/topic/path'
 MERGE (s:MqttTestNode {someProp:"startNode"}) -[l:MQTT_TEST {someProp:"linkProp"}]->(e:MqttTestNode {someProp:"endNode"})
@@ -239,7 +268,7 @@ RETURN mqtt.publishMessage(
   l
 )
 ```
-Received MqTT Message on 'mqtt/topic/path' 
+Received MQTT Message on 'mqtt/topic/path' 
 ```json
 {
   "topic": "mqtt/topic/path",
@@ -267,9 +296,9 @@ Received MqTT Message on 'mqtt/topic/path'
 }
 ```
 
-If stream is passed - for every object MqTT messages will be send
+If list is provided - for every object MQTT messages will be send!
 ```cypher
-// --- publish list of nodes JSON document to 'mqtt/topic/path' - please note for every node in the list MqTT message will be send
+// --- publish list of nodes JSON document to 'mqtt/topic/path' - please note for every node in the list MQTT message will be send
 MATCH (n:MqttTestNode)  
 RETURN mqtt.publishMessage(
   'neo4jMqttClientId', 
@@ -278,8 +307,8 @@ RETURN mqtt.publishMessage(
 )
 ```
 
-We can export graph data as JSON using APOC export json query - please note APOC node relations JSON export format differes from our node relation format!
-CYPHER query with APOC export
+We can export graph data as JSON using APOC export json query - please note JSON export format from the APOC export json query differs from our node-relation JSON format. Refer to the examples provided to understand these differences and effectively manage the exported data.
+Cypher query with APOC export
 ```cypher
 // --- publish graph using APOC JSON export 
 CALL apoc.export.json.query(
@@ -294,7 +323,7 @@ RETURN mqtt.publishMessage(
     apocJsonGraph
 )
 ```
-Received MqTT Message on 'mqtt/topic/path' 
+Received MQTT Message on 'mqtt/topic/path' 
 ```json
 {
   "topic": "mqtt/topic/path",
@@ -357,7 +386,7 @@ Received MqTT Message on 'mqtt/topic/path'
 }
 ```
 
-We can setup APOC triger which will send MqTT messages upon database transactions
+We can setup APOC triger which will send MQTT messages upon database transactions - please see example
 * to setup trigger see: https://neo4j.com/docs/apoc/current/background-operations/triggers/#_list_of_triggers
 ```
 # setup apoc.conf with 
@@ -369,7 +398,7 @@ dbms.security.procedures.unrestricted=apoc.*
 
 # restart Neo4j
 ```
-CYPHER query to register triger which will send MqTT message on node creation
+Cypher query to register triger which will send MQTT message on node creation
 ```cypher
 :use system
 CALL apoc.trigger.install(
@@ -381,14 +410,14 @@ CALL apoc.trigger.install(
 :use neo4j
 ```
 
-CYPHER which will create new node and trigger MqTT message
+Cypher which will create new node and trigger MQTT message ...
 ```cypher
 // --- test
 CREATE (n:MqttTestTrigger)
 RETURN n
 ```
 
-Mqtt message received when new node is created
+... MQTT message received when new node is created.
 ```json
 {
   "topic": "mqtt/topic/path",
@@ -413,20 +442,20 @@ Mqtt message received when new node is created
 ```
 
 ## Neo4j publishGrph Procedure
-CYPHER query which will "publish" graph as single MqTT message - see response 
+Cypher query which will "publish" graph as single MQTT message - see example for request and message send (graph is exported as JSON nodes and relationships arrays). 
 ```cypher
-// --- publish Neo4j graph using CYPHER query with params + MqTT v5 "goodies"
+// --- publish Neo4j graph using Cypher query with params + MQTT v5 "goodies"
 CALL mqtt.publishGrph(
   'neo4jMqttClientId', 
   'mqtt/topic/path',
-  'MERGE (s:MqttTestNode {someProp:"startNode"}) -[l:MQTT_TEST {someProp:"linkProp"}]->(e:MqttTestNode {someProp:"endNode"}) RETURN *',    // CYPHER query
-  {message:123},      // CYPHER query params
+  'MERGE (s:MqttTestNode {someProp:"startNode"}) -[l:MQTT_TEST {someProp:"linkProp"}]->(e:MqttTestNode {someProp:"endNode"}) RETURN *',    // Cypher query
+  {message:123},      // Cypher query params
   {
     responseTopic:"mqtt/topic/path/response"
   }
 )
 ```
-Mqtt message received
+MQTT message received
 ```json
 {
   "topic": "mqtt/topic/path",
@@ -487,29 +516,30 @@ Mqtt message received
 }
 ```
 
-# Subscribe to MqTT Messages and run CYPHER Queries
-Two Neo4j MqTT subscription procedures are aviable:
-- subscribeCypherQuery - kind of MqTT "BOLT" protocol for the execution of database queries
-- subscribeCypherRun - predefined CYPHER queries will be executed upon MqTT message receive - message will be populated as query params to the CYPHER query defined by the subscription.
+# Subscribing to MQTT Messages with Neo4j
+The Neo4j MQTT client offers two distinct subscription procedures, each tailored to different use cases, allowing seamless integration of MQTT messages into the Neo4j database ecosystem.
+
+subscribeCypherQuery Procedure
+The subscribeCypherQuery procedure functions akin to the MQTT "BOLT" protocol, enabling the execution of database queries upon receiving MQTT messages. This subscription method facilitates direct interaction with the Neo4j database through Cypher queries triggered by incoming MQTT messages. Explore the examples provided to comprehend the intricacies and applications of this query-based subscription procedure.
+
+subscribeCypherRun Procedure
+Contrasting the previous method, the subscribeCypherRun procedure automates the execution of predefined Cypher queries upon the reception of MQTT messages. These predefined queries are executed with the MQTT message content populated as query parameters, enhancing the flexibility and adaptability of message-based interactions within the Neo4j environment. Review the examples to understand the implementation and advantages of this subscription approach.
 
 ## Neo4j subscribeCypherQuery Procedure
-Following CYPHER Query will subscribe Neo4j Client to the provided topic and process encripted messages as query requests
-request should be in format query, params - see example
+By executing the following Cypher Query, the Neo4j MQTT Client will subscribe to the designated topic and handle incoming messages as Cypher query requests. 
+Request should be in format query, param, options - see example.
 ```cypher
-// --- listen on 'neo4j/cypherQuery/requestEncripted' with an default response topic passed as "responseTopic"
+// --- listen on 'neo4j/cypherQuery/request' with an default response topic passed as "responseTopic"
 CALL mqtt.subscribeCypherQuery(
-  'neo4jMqttClientId',               // Neo4j MqTT Client ID
-  'neo4j/cypherQuery/requestEncripted',       // topic to listen for CYPHER query requests in format {query: ""cypher Query", params: {} }
-  {                                  // options map with default response topis where query results will be published
-      responseTopic:'neo4j/cypherQuery/resultsDefault',  // default response topic
-      encription: "aes-cbc",                    // currently only aes-cbc is supported
-      ivBase64: "FnAxDoCHpgHkrZr3jRGmbA==",     // Base64 encoded iv 
-      keyBase64: "2ggLKL4wxTwmZQ8kPMCT8A=="     // Base64 encoded key
+  'neo4jMqttClientId',               // Neo4j MQTT Client ID
+  'neo4j/cypherQuery/request',       // topic to listen for Cypher query requests in format {query: ""Cypher Query", params: {} }
+  {                                  // options map with default response topic where query results will be published if no MQTT "responseTopic" is present in the request message
+      responseTopic:'neo4j/cypherQuery/resultsDefault'
   }
 ) 
 ```
 
-Graph MqTT CYPHER Query Request message send on "neo4j/cypherQuery/request" topic will trigger ....
+Graph MQTT Cypher Query Request message send on "neo4j/cypherQuery/request" topic will trigger ...
 ```json
 {
   "topic": "neo4j/cypherQuery/request",
@@ -525,7 +555,7 @@ Graph MqTT CYPHER Query Request message send on "neo4j/cypherQuery/request" topi
 }
 ```
 
-.... MqTT message received on "neo4j/cypherQuery/results" topic.
+... MQTT message received on "neo4j/cypherQuery/results" topic. Please note @graph JSON object with nodes and relations arrays is added to the Cypher query keys! Please note the query metadate send as an MQTT v5 userProperties object.
 ```json
 
 {
@@ -625,36 +655,60 @@ Graph MqTT CYPHER Query Request message send on "neo4j/cypherQuery/request" topi
   }
 }
 ```
+![Running Cypher Query Using cypherQuery MQTT Subscription Procedure](img/cypher-mqtt-subscribe-cypherQuery.PNG)
 
-Following CYPHER Query will subscribe Neo4j Client to the provided topic and process received messages as query requests
-request should be in format query, params - see example
+Following Cypher Query will subscribe Neo4j Client to the provided topic and process encripted messages as query requests.
 ```cypher
-// --- listen on 'neo4j/cypherQuery/request' with an default response topic passed as "responseTopic"
+// --- listen on 'neo4j/cypherQuery/requestEncripted' with an default response topic passed as "responseTopic"
 CALL mqtt.subscribeCypherQuery(
   'neo4jMqttClientId',               // Neo4j MqTT Client ID
-  'neo4j/cypherQuery/request',       // topic to listen for CYPHER query requests in format {query: ""cypher Query", params: {} }
-  {                                  // options map with default response topis where query results will be published
-      responseTopic:'neo4j/cypherQuery/resultsDefault'
+  'neo4j/cypherQuery/requestEncripted',       // topic to listen for Cypher query requests in format {query: "Cypher Query", params: {} }
+  {                                  // options map with default response topic where query results will be published
+      responseTopic:'neo4j/cypherQuery/resultsDefault',  // default response topic
+      encription: "aes-cbc",                    // currently only aes-cbc is supported
+      ivBase64: "FnAxDoCHpgHkrZr3jRGmbA==",     // Base64 encoded iv 
+      keyBase64: "2ggLKL4wxTwmZQ8kPMCT8A=="     // Base64 encoded key
   }
 ) 
 ```
+Graph MQTT Cypher Query Request message send on "neo4j/cypherQuery/requestEncripted" topic will trigger ...
+```json
+{
+  "topic": "neo4j/cypherQuery/requestEncripted",
+  "payload": "fx3FGoWEiZvkaTs09bhR0BaFOY7WJF3V1mQLaD+9LEf11utoIL0rgmIYLRhhrvfJ5nikR2+5BeC87EInl2l5vUrxvWNkBMIgMVGKaEIJgTl4UOUPsIQ+DkyCuyZWtSr9+forB0xL2it6SU+ATkbn7gp0QhkHrYwhj8iXsOGkfLurvQgQJgZ+tpJi+wbMOseaw3mkuZWjH+2aqNNvnU7+YpoR4lBv0+nXDYiYzT+YAxw=",
+  "qos": 0,
+  "retain": false,
+  "responseTopic": "neo4j/cypherQuery/resultsEncripted",
+}
+```
+... MQTT message received on "neo4j/cypherQuery/resultsEncripted" topic. Please note that Cypher query metadata is removed - no "userProperties" in the MqTT message!
+```json
+{
+  "topic": "neo4j/cypherQuery/resultsEncripted",
+  "payload": "AiB5GVZ2EKjj9aYHsDJcfjKWjJA8DbkO6JsX6wQ4M/jlkMy6faZvgvPmbFhwTCG6U0kWgAkrf93ztHgcY12iH9Ll1piAN4yJJPDTsAcWtxAW4xXvtuu0a9sy2B/LX+gk0IO4xfXinPpN540c/UpPmbWimKYzbZBi/sxRt76TmEeuYlhUP0T1gI6kj7uVngkGSZyykVn+rvFc1xqLIUDDQOO94WhmOsSWpWVC59/7g0z/z7bdc3DIWHYsIvAyYd1oRj/UMe3bpRRiQ4aSzX1DoJseGvBl4Npj1vE13o2GHSIyIeiBNeGRnG0aQnsw/DW1vUK1sAwB1iSfnfZnEU7FE13p5+4UViCJ+WantMfz+7bPfpp0/9orLhJunJhM+8t75td+TYXJ7/K1nszocHv4wPH4l/PUnlHa5xAzZbHkEd77XmcxqpNvnzNL9zaxHp+YKsfbI1etXwu8M87iyy//EmxQHo2dd7zTYm4IupUTn6Gd+Y680PsvIxFKqTqNx3HjFYmZq3DzvLP9bpURmiZsioz+kYWO65lg+zp3qB+zJDIPnQXUu1GqDt0jaYez1Zv3V+otQ7UyM2PIvE/6/HQbeWHPDgbzNsyWb9jHuOiX3yHabViu38rWdeSr7zLluY8jDH6ZxRz8/gGqZN53XF2nLDasSxiKJjf8hYBm+JDMywbo17URplLcQpH5u4ASwH8Y7C7uRev3XWnj5XxdUKjU4kTciT39UROBgt1jdqh10+Km12+oNz5JKxy9bbS2PIqOKDlRrS8RsFt54rQHSKOC6SNfzsSUSEUq9PIP5pHwyxhS+AGTEzwN/DVIkfJZSo6DVtHG39iWFIy53jYBcD3UCy3uBi7OrReZ+NWAZeb5Y2L8n8IIJO1vlTi88sE/2/VzncciGd6Gs4T5XgoyQvAsqj2cz74LaFJc2fwzIOFdy5c=",
+  "qos": 0,
+  "retain": false
+}
+```
+![Running Encripted Cypher Query Using cypherQuery MQTT Subscription Procedure](img/cypher-mqtt-subscribe-cypherQuery-encripted.PNG)
+
 
 
 ## Neo4j subscribeCypherRun Procedure 
-Predefined CYPHER queries will be executed upon MqTT message receive - message will be populated as query params to the query stored by the subscription.
+Upon receiving MQTT messages, predefined Cypher queries stored within the subscription will automatically execute. The content of the received message will populate the query parameters, allowing seamless execution of the stored query associated with the subscription.
 ```cypher
-// --- listen on 'neo4j/cypherQuery/request' with an default response topics passed as option "responseTopic"
+// --- listen on 'neo4j/cypherQuery/request' with an default response topic passed as option "responseTopic"
 CALL mqtt.subscribeCypherRun(
-  'neo4jMqttClientId', 
-  'neo4j/cypherRun/request',
-  'MERGE (n:MqttTestSubscribe) ON CREATE SET n.count=1, n.message=$message ON MATCH SET n.count = n.count +1, n.message=$message RETURN n', // CYPHER query - query params will be received by the message
-  {                 // options map with default response topis where query results will be published
+  'neo4jMqttClientId',                // Neo4j MqTT Client ID
+  'neo4j/cypherRun/request',          // topic to listen for MQTT messages / query params
+  'MERGE (n:MqttTestSubscribe) ON CREATE SET n.count=1, n.message=$message ON MATCH SET n.count = n.count +1, n.message=$message RETURN n', // Cypher query - query params will be received by the message
+  {                                   // options map with default response topic where query results will be published
     responseTopic:'neo4j/cypherRun/resultsDefault'
   } 
 )
 ```
 
-Following MqTT message send to "neo4j/cypherRun/request" will trigger ...
+Following MQTT message send to "neo4j/cypherRun/request" will trigger ...
 ```json
 
 {
@@ -667,7 +721,7 @@ Following MqTT message send to "neo4j/cypherRun/request" will trigger ...
   "responseTopic": "neo4j/cypherRun/results"
 }
 ```
-... MqTT message receive on "neo4j/cypherRun/results"
+... MQTT message receive on "neo4j/cypherRun/results"
 ```json
 {
   "topic": "neo4j/cypherRun/results",
@@ -722,7 +776,7 @@ Following MqTT message send to "neo4j/cypherRun/request" will trigger ...
 }
 ```
 
-... or sample error MqTT message receive on "neo4j/cypherRun/results"
+... or sample error MQTT message receive on "neo4j/cypherRun/results"
 ```json
 {
   "topic": "neo4j/cypherRun/results",
@@ -750,3 +804,66 @@ Following MqTT message send to "neo4j/cypherRun/request" will trigger ...
   }
 }
 ```
+
+
+Following Cypher Query will subscribe Neo4j Client to the provided topic and process encripted messages as query requests.
+```cypher
+// --- listen on 'neo4j/cypherRun/requestEncripted' with an default response topic passed as "responseTopic" and AES-CBC properties
+CALL mqtt.subscribeCypherRun(
+  'neo4jMqttClientId',                          // Neo4j MqTT Client ID
+  'neo4j/cypherRun/requestEncripted',           // topic to listen for MQTT messages / query params
+  'MERGE (n:MqttTestSubscribe) ON CREATE SET n.count=1, n.message=$message ON MATCH SET n.count = n.count +1, n.message=$message RETURN n', // Cypher query - query params will be received by the message
+   {                                            // options map with default response topic where query results will be published
+      responseTopic:'neo4j/cypherQuery/resultsDefault',  // default response topic
+      encription: "aes-cbc",                    // currently only aes-cbc is supported
+      ivBase64: "FnAxDoCHpgHkrZr3jRGmbA==",     // Base64 encoded iv 
+      keyBase64: "2ggLKL4wxTwmZQ8kPMCT8A=="     // Base64 encoded key
+  }
+)
+```
+Following AES-CBC encripted MQTT message send to "neo4j/cypherRun/requestEncripted" will trigger ...
+```
+{
+  "topic": "neo4j/cypherRun/requestEncripted",
+  "payload": "UggTX2UioU86GZ1IXNMUObl2hbbRfpCXZgL3H/yh8CHlcFwhPqCqLQzkL8IyOEGx",
+  "qos": 0,
+  "retain": false,
+  "responseTopic": "neo4j/cypherRun/resultsEncripted",
+  "correlationData": [
+    99,
+    111,
+    114,
+    114,
+    101,
+    108,
+    97,
+    116,
+    105,
+    111,
+    110
+  ]
+}
+```
+... encripted MQTT message received on "neo4j/cypherRun/resultsEncripted"
+```
+{
+  "topic": "neo4j/cypherRun/resultsEncripted",
+  "payload": "AiB5GVZ2EKjj9aYHsDJcfjKWjJA8DbkO6JsX6wQ4M/jlkMy6faZvgvPmbFhwTCG6U0kWgAkrf93ztHgcY12iH9Ll1piAN4yJJPDTsAcWtxA2orD9YBSe6lAQiQDMzzxRLzFUaXunHACGEBUv42fy9ofc0OCh9x1wye7jQznCsUVn1Ha/sjiuyKG0yd95g3irM9WOGS4CiFPIBk1LB/Qvnf3ZAiodKAFHUSYgVVtXNzJFXEwNbh8ZjbEYoZOqcB4ZQYVgjH7Sr/4cAnb8rNxMCFEqr9L5A/bMDj87NhD56VedLa3aUSCEZFPjegAVv/sxSIY0vrU5GRDwK8S/eRnbguVBd1V+3zo/55ducnRAJi3TEc474kG/Gbo7eqGmg7vr6H0NTx6vr701z4IS7cjOdbuzBTx8GB4SZBf3CkmIxa+BsQuCXvstMlIuWdk9v58CtqvbX/3RbGYIwp/Owm08buchMpyS/HBExb9SpjU1WYcqRcYff3msEfAyfKFII2QGZMhc8C1KiqGA4r4Gp5L/K4sjIYrPmxMEHSu7yUO9PXfnfe9h0a+PVbQuiC1S9AuG",
+  "qos": 0,
+  "retain": false,
+  "correlationData": [
+    99,
+    111,
+    114,
+    114,
+    101,
+    108,
+    97,
+    116,
+    105,
+    111,
+    110
+  ]
+}
+```
+

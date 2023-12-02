@@ -79,7 +79,7 @@ public class ProcessMqttMessage {
             log.info("mqtt - ProcessMqttMessage: message not encripted - or unknown encription ");
         }
         // --- debug message
-        log.debug("mqtt - ProcessMqttMessage:   "  + message + " "+ subscribeOptions);
+        log.debug("mqtt - ProcessMqttMessage:   " + message + " " + subscribeOptions);
         // --- user props
         Map<String, Object> userProperties = (Map<String, Object>) mqttMesageObject.get("userProperties");
         // --- get response topic - use default
@@ -224,7 +224,7 @@ public class ProcessMqttMessage {
                     + "\n cypherParams: \n " + cypherParams.toString()
                     + "\n cypherQuery error:\n " + ex.toString()
                     + "\n";
-            log.error("mqtt - ProcessMqttMessage: lastMessageProcessedResults ERROR - " +lastMessageProcessedResults);
+            log.error("mqtt - ProcessMqttMessage: lastMessageProcessedResults ERROR - " + lastMessageProcessedResults);
         }
 
         // --- send mqtt message if topic is defined
@@ -244,8 +244,11 @@ public class ProcessMqttMessage {
                 }
 
                 Map<String, Object> mqttPublishOptionsMap = new HashMap();
-
-                mqttBrokerNeo4jClient.publish((String) responseTopic, (String) dbResultString, cypherQuerMetadata,                 mqttPublishOptionsMap);
+                if (correlationData != "") {
+                    mqttPublishOptionsMap.put("correlationData", correlationData);
+                }
+                mqttBrokerNeo4jClient.publish((String) responseTopic, (String) dbResultString, cypherQuerMetadata,
+                        mqttPublishOptionsMap);
                 log.info("mqtt - ProcessMqttMessage: MqTT message send OK");
 
             } catch (Exception ex) {
