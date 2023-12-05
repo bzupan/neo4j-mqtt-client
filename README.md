@@ -31,6 +31,9 @@ Neo4j Graph Database MQTT v5 Client Functions and Procedures:
 - [Node RED test flows](test/node-red/node-red_neo4jMqttClientTests.json) are prepared for examples demonstrated in this README
 - Versioning - first two version numbers match Neo4j and APOC release - you need to use the plugin version to match APOC and Neo4j version
 
+## Setup
+[Setup](./README_testSetup.md)
+
 # Managing Neo4j MQTT Clients and Connections
 Effectively managing Neo4j MQTT clients involves a series of steps, from registering the client within the Neo4j environment to establishing a stable connection with the MQTT broker. Once this connection is established, the Neo4j MQTT client is primed to interact seamlessly with the MQTT broker.
 
