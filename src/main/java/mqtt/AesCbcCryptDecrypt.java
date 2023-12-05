@@ -11,13 +11,13 @@ import java.util.Map;
 import javax.crypto.KeyGenerator;
 import java.security.SecureRandom;
 
-public class AesCbcCriptDecript {
+public class AesCbcCryptDecrypt {
 
     private static final String characterEncoding = "UTF-8";
     private static final String cipherTransformation = "AES/CBC/PKCS5Padding";
     private static final String aesEncryptionAlgorithm = "AES";
 
-    public AesCbcCriptDecript() {
+    public AesCbcCryptDecrypt() {
 
     }
 
@@ -66,7 +66,7 @@ public class AesCbcCriptDecript {
         return keyIv;
     }
 
-    public String encript(String unencriptedText, String keyBase64, String ivBase64)
+    public String encrypt(String unencryptedText, String keyBase64, String ivBase64)
             throws Exception {
         // --- get key and iv
         byte[] keyBytes = Base64.getDecoder().decode(keyBase64.getBytes());
@@ -78,19 +78,19 @@ public class AesCbcCriptDecript {
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
         cipher.getAlgorithm();
         // --- encrypt
-        byte[] plainTextBytes = unencriptedText.getBytes();
+        byte[] plainTextBytes = unencryptedText.getBytes();
         byte[] encryptedBytes = cipher.doFinal(plainTextBytes);
 
-        String encriptedTextBase64 = Base64.getEncoder().encodeToString(encryptedBytes);
-        // String encriptedHex = javax.xml.bind.DatatypeConverter.printHexBinary(encryptedBytes);
-        // String encriptedText = new String(encryptedBytes, characterEncoding);
+        String encryptedTextBase64 = Base64.getEncoder().encodeToString(encryptedBytes);
+        // String encryptedHex = javax.xml.bind.DatatypeConverter.printHexBinary(encryptedBytes);
+        // String encryptedText = new String(encryptedBytes, characterEncoding);
         // --- return encoded base64
-        return encriptedTextBase64;
+        return encryptedTextBase64;
     }
 
-    public String decrypt(String textEncriptedBase64, String keyBase64, String ivBase64)
+    public String decrypt(String textEncryptedBase64, String keyBase64, String ivBase64)
             throws Exception {
-        // --- get / set keyand iv
+        // --- get / set key and iv
         byte[] keyBytes = Base64.getDecoder().decode(keyBase64.getBytes());
         byte[] ivBytes = Base64.getDecoder().decode(ivBase64.getBytes());
         SecretKeySpec secretKeySpecy = new SecretKeySpec(keyBytes, aesEncryptionAlgorithm);
@@ -99,10 +99,10 @@ public class AesCbcCriptDecript {
         Cipher cipher = Cipher.getInstance(cipherTransformation);
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpecy, ivParameterSpec);
         // -- decrypt
-        byte[] textEncriptedByte = Base64.getDecoder().decode(textEncriptedBase64.getBytes());
-        byte[] textUnencriptedByte = cipher.doFinal(textEncriptedByte);
-        String textUnencriptedAscii = new String(textUnencriptedByte, characterEncoding);
+        byte[] textEncryptedByte = Base64.getDecoder().decode(textEncryptedBase64.getBytes());
+        byte[] textUnencryptedByte = cipher.doFinal(textEncryptedByte);
+        String textUnencryptedAscii = new String(textUnencryptedByte, characterEncoding);
         // --- return string
-        return textUnencriptedAscii;
+        return textUnencryptedAscii;
     }
 }

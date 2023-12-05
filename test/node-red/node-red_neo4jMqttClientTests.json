@@ -8,7 +8,7 @@
         "env": []
     },
     {
-        "id": "976b8220983f052f",
+        "id": "d1d775e7f07656eb",
         "type": "tab",
         "label": "Neo4j MqTT Client Test",
         "disabled": false,
@@ -713,9 +713,9 @@
         ]
     },
     {
-        "id": "4f0c1d39437d444f",
+        "id": "5da35bf3ceb00964",
         "type": "inject",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/request - regular \"node\" request",
         "props": [
             {
@@ -737,16 +737,16 @@
         "y": 480,
         "wires": [
             [
-                "d6ac97214a827e87",
-                "c6b09e6565f14d0e",
-                "034f4ec8893c0dde"
+                "0572de02b2264e82",
+                "723428709c536776",
+                "11d17ebdfc03763e"
             ]
         ]
     },
     {
-        "id": "f9b3bb962b8dbe25",
+        "id": "91a0e2cf677e1acc",
         "type": "debug",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/results",
         "active": true,
         "tosidebar": true,
@@ -756,14 +756,14 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1050,
-        "y": 840,
+        "x": 1040,
+        "y": 860,
         "wires": []
     },
     {
-        "id": "9aec7142db263609",
+        "id": "c4acf2fee3610006",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/results",
         "topic": "neo4j/cypherQuery/results",
         "qos": "2",
@@ -774,18 +774,17 @@
         "rh": 0,
         "inputs": 0,
         "x": 190,
-        "y": 840,
+        "y": 860,
         "wires": [
             [
-                "f9b3bb962b8dbe25"
+                "91a0e2cf677e1acc"
             ]
         ]
     },
     {
-        "id": "d6ac97214a827e87",
+        "id": "0572de02b2264e82",
         "type": "mqtt out",
-        "z": "976b8220983f052f",
-        "d": true,
+        "z": "d1d775e7f07656eb",
         "name": "mqtt with v5 options",
         "topic": "",
         "qos": "",
@@ -801,19 +800,19 @@
         "wires": []
     },
     {
-        "id": "1abafd2a0b9d4a2b",
+        "id": "18e5ddd21b50ee72",
         "type": "comment",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "README cypherQuery",
-        "info": "// --- Subscribe to MqTT Topic for Cypher Query  \nCALL mqtt.subscribeCypherQuery(\n    'mqttBrokerId', \n    'neo4j/cypherQuery/request', \n    {\n        responseTopic:'neo4j/cypherQuery/resultsDefault'\n    }\n) \n\n// --- Subscribe to MqTT Topic for Cypher Query  listen encripted messages\nCALL mqtt.subscribeCypherQuery(\n    'mqttBrokerId', \n    'neo4j/cypherQuery/requestEncripted', \n    {\n        responseTopic:'neo4j/cypherQuery/resultsDefault',\n        encription: \"aes-cbc\",\n        ivBase64: \"FnAxDoCHpgHkrZr3jRGmbA==\",\n        keyBase64: \"2ggLKL4wxTwmZQ8kPMCT8A==\"\n    }\n)\n\n\n",
+        "info": "// --- Subscribe to MqTT Topic for Cypher Query  \nCALL mqtt.subscribeCypherQuery(\n    'neo4jMqttClientId', \n    'neo4j/cypherQuery/request', \n    {\n        responseTopic:'neo4j/cypherQuery/resultsDefault'\n    }\n) \n\n// --- Subscribe to MqTT Topic for Cypher Query  listen encrypted messages\nCALL mqtt.subscribeCypherQuery(\n    'neo4jMqttClientId', \n    'neo4j/cypherQuery/requestEncrypted', \n    {\n        responseTopic:'neo4j/cypherQuery/resultsDefault',\n        encryption: \"aes-cbc\",\n        ivBase64: \"FnAxDoCHpgHkrZr3jRGmbA==\",\n        keyBase64: \"2ggLKL4wxTwmZQ8kPMCT8A==\"\n    }\n)\n\n\n",
         "x": 180,
         "y": 400,
         "wires": []
     },
     {
-        "id": "79a18f354d642bab",
+        "id": "145f15a57541cac1",
         "type": "inject",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/request regular \"non graph\" request",
         "props": [
             {
@@ -835,16 +834,16 @@
         "y": 440,
         "wires": [
             [
-                "d6ac97214a827e87",
-                "c6b09e6565f14d0e",
-                "034f4ec8893c0dde"
+                "0572de02b2264e82",
+                "723428709c536776",
+                "11d17ebdfc03763e"
             ]
         ]
     },
     {
-        "id": "1662bf45a333a2cc",
+        "id": "0a742d1f5f1b8001",
         "type": "inject",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/request - regular \"graph\" request",
         "props": [
             {
@@ -866,16 +865,16 @@
         "y": 520,
         "wires": [
             [
-                "d6ac97214a827e87",
-                "c6b09e6565f14d0e",
-                "034f4ec8893c0dde"
+                "0572de02b2264e82",
+                "723428709c536776",
+                "11d17ebdfc03763e"
             ]
         ]
     },
     {
-        "id": "6b4c74b85d50a187",
+        "id": "01e60aede42d496e",
         "type": "inject",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/request - error request",
         "props": [
             {
@@ -897,16 +896,16 @@
         "y": 600,
         "wires": [
             [
-                "d6ac97214a827e87",
-                "c6b09e6565f14d0e",
-                "034f4ec8893c0dde"
+                "0572de02b2264e82",
+                "723428709c536776",
+                "11d17ebdfc03763e"
             ]
         ]
     },
     {
-        "id": "05571c3586200374",
+        "id": "032839b7f151f5e4",
         "type": "inject",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/request - non regular  empty request ",
         "props": [
             {
@@ -928,16 +927,16 @@
         "y": 560,
         "wires": [
             [
-                "d6ac97214a827e87",
-                "c6b09e6565f14d0e",
-                "034f4ec8893c0dde"
+                "0572de02b2264e82",
+                "723428709c536776",
+                "11d17ebdfc03763e"
             ]
         ]
     },
     {
-        "id": "5ae15fbd62e3fd6f",
+        "id": "9f64d4958e410fd1",
         "type": "debug",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/resultsDefault",
         "active": true,
         "tosidebar": true,
@@ -947,14 +946,14 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1020,
-        "y": 960,
+        "x": 1010,
+        "y": 980,
         "wires": []
     },
     {
-        "id": "f0e1e1cb433c04db",
+        "id": "46c0ce8b567d20d7",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/resultsDefault",
         "topic": "neo4j/cypherQuery/resultsDefault",
         "qos": "2",
@@ -965,18 +964,17 @@
         "rh": 0,
         "inputs": 0,
         "x": 210,
-        "y": 960,
+        "y": 980,
         "wires": [
             [
-                "5ae15fbd62e3fd6f"
+                "9f64d4958e410fd1"
             ]
         ]
     },
     {
-        "id": "90b0b5f4aad20ae4",
+        "id": "2067ae3125c25656",
         "type": "mqtt out",
-        "z": "976b8220983f052f",
-        "d": true,
+        "z": "d1d775e7f07656eb",
         "name": "mqtt no v5 options",
         "topic": "",
         "qos": "",
@@ -992,9 +990,9 @@
         "wires": []
     },
     {
-        "id": "453d2889569b2067",
+        "id": "64ed5369a83f66fc",
         "type": "debug",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherRun/resultsDefault",
         "active": true,
         "tosidebar": true,
@@ -1004,14 +1002,14 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1010,
-        "y": 1880,
+        "x": 990,
+        "y": 1780,
         "wires": []
     },
     {
-        "id": "f7b6843f2fddeaa6",
+        "id": "13d91f66fd362dcc",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherRun/resultsDefault",
         "topic": "neo4j/cypherRun/resultsDefault",
         "qos": "2",
@@ -1021,18 +1019,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 190,
-        "y": 1880,
+        "x": 170,
+        "y": 1780,
         "wires": [
             [
-                "453d2889569b2067"
+                "64ed5369a83f66fc"
             ]
         ]
     },
     {
-        "id": "1f2380e080c31664",
+        "id": "2cfe860fbde60f3c",
         "type": "inject",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherRun/request - regular \"json object\" request",
         "props": [
             {
@@ -1054,16 +1052,16 @@
         "y": 1340,
         "wires": [
             [
-                "90b0b5f4aad20ae4",
-                "6b87aa6409a6f005",
-                "b6e204095a4f9314"
+                "2067ae3125c25656",
+                "6e77eb2c7d243a7b",
+                "ae71121570d5231b"
             ]
         ]
     },
     {
-        "id": "0c61c11cf81b989b",
+        "id": "0109b9b847e7dfd4",
         "type": "inject",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherRun/request - error",
         "props": [
             {
@@ -1085,26 +1083,26 @@
         "y": 1380,
         "wires": [
             [
-                "90b0b5f4aad20ae4",
-                "6b87aa6409a6f005",
-                "b6e204095a4f9314"
+                "2067ae3125c25656",
+                "6e77eb2c7d243a7b",
+                "ae71121570d5231b"
             ]
         ]
     },
     {
-        "id": "83c920bce1f5d9bd",
+        "id": "407f6773d1fba3d5",
         "type": "comment",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "README cypherRun",
-        "info": "// --- listen on 'neo4j/cypherQuery/request' with an default response topics passed as option \"responseTopic\"\nCALL mqtt.subscribeCypherRun(\n  'neo4jMqttClientId', \n  'neo4j/cypherRun/request',\n  'MERGE (n:MqttTestSubscribe) ON CREATE SET n.count=1, n.message=$message ON MATCH SET n.count = n.count +1, n.message=$message RETURN n', // CYPHER query - query params will be received by the message\n  {                 // options map with default response topis where query results will be published\n    responseTopic:'neo4j/cypherRun/resultsDefault'\n  } \n)",
+        "info": "// --- listen on 'neo4j/cypherQuery/request' with an default response topics passed as option \"responseTopic\"\nCALL mqtt.subscribeCypherRun(\n  'neo4jMqttClientId', \n  'neo4j/cypherRun/request',\n  'MERGE (n:MqttTestSubscribe) ON CREATE SET n.count=1, n.message=$message ON MATCH SET n.count = n.count +1, n.message=$message RETURN n', // CYPHER query - query params will be received by the message\n  {                 // options map with default response topis where query results will be published\n    responseTopic:'neo4j/cypherRun/resultsDefault'\n  } \n)\n\n\n\n// --- Subscribe to MqTT Topic for Cypher RUN  listen encrypted messages\nCALL mqtt.subscribeCypherRun(\n    'neo4jMqttClientId', \n    'neo4j/cypherRun/requestEncrypted', \n     'MERGE (n:MqttTestSubscribe) ON CREATE SET n.count=1, n.message=$message ON MATCH SET n.count = n.count +1, n.message=$message RETURN n', // CYPHER query - query params will be received by the message\n    {\n        responseTopic:'neo4j/cypherQuery/resultsDefault',\n        encryption: \"aes-cbc\",\n        ivBase64: \"FnAxDoCHpgHkrZr3jRGmbA==\",\n        keyBase64: \"2ggLKL4wxTwmZQ8kPMCT8A==\"\n    }\n)",
         "x": 160,
         "y": 1280,
         "wires": []
     },
     {
-        "id": "5c8308ec228efdfc",
+        "id": "ceac2f9f6b592df0",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "mqtt/topic/path",
         "topic": "mqtt/topic/path",
         "qos": "2",
@@ -1118,14 +1116,14 @@
         "y": 200,
         "wires": [
             [
-                "3e47a267f9a3e8db"
+                "7c4e4b3fd3664e74"
             ]
         ]
     },
     {
-        "id": "3e47a267f9a3e8db",
+        "id": "7c4e4b3fd3664e74",
         "type": "debug",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "mqtt/topic/path",
         "active": true,
         "tosidebar": true,
@@ -1140,9 +1138,9 @@
         "wires": []
     },
     {
-        "id": "00e9e98d5b8effbe",
+        "id": "b93ec7d886f52384",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "d": true,
         "name": "all messages -  #",
         "topic": "#",
@@ -1157,14 +1155,14 @@
         "y": 80,
         "wires": [
             [
-                "d06f617be9878338"
+                "f4561d156e6788fc"
             ]
         ]
     },
     {
-        "id": "d06f617be9878338",
+        "id": "f4561d156e6788fc",
         "type": "debug",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "all messages - #",
         "active": true,
         "tosidebar": true,
@@ -1179,30 +1177,29 @@
         "wires": []
     },
     {
-        "id": "2096792f79f282a2",
+        "id": "6ae77fe52983ac24",
         "type": "comment",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "MqTT publish",
-        "info": "// --- Publish MqTT Message \nRETURN mqtt.publishMessage(\n    'neo4jMqttClientId', \n    'mqtt/topic/path', \n    {message:123}\n)\n\n// --- Publish MqTT Message with MqTT V5 options\nRETURN mqtt.publishMessage(\n    'neo4jMqttClientId', \n    'mqtt/topic/path', \n    {message:123}, \n    {\n        responseTopic:\"mqtt/topic/path/response\",\n        correlationData:\"messageId-123\" \n    }\n)\n\n// --- AES-CBC encript MqTT payload\nRETURN mqtt.publishMessage(\n    'neo4jMqttClientId', \n    'mqtt/topic/pathEncripted', \n    {message:123}, \n    {\n        responseTopic:\"mqtt/topic/path/response\", \n        correlationData:\"messageId-123\",\n        encription: \"aes-cbc\",\n        ivBase64: \"FnAxDoCHpgHkrZr3jRGmbA==\",\n        keyBase64: \"2ggLKL4wxTwmZQ8kPMCT8A==\"\n    }  \n)\n\n\n\n// --- use in Cypher\nWITH {message:\"return messsage\"} AS messageToReturn\nRETURN mqtt.publishMessage('neo4jMqttClientId', 'mqtt/topic/path', messageToReturn)\nMATCH (n) WITH n  RETURN mqtt.publishMessage('neo4jMqttClientId', 'mqtt/topic/path', n)\nMATCH (n) WITH n  RETURN mqtt.publishMessage('neo4jMqttClientId', 'mqtt/topic/path', COLLECT(n))\n\n\n// --- return JSON graph export \nCALL apoc.export.json.query(\n    \"MATCH (u) return u\",\n    null,\n    {stream: true}\n)\nYIELD  data\n//RETURN data\nmqtt.publishMessage('neo4jMqttClientId', 'mqtt/topic/path', data))\n\n// --- trigger\nhttps://neo4j.com/docs/apoc/current/background-operations/triggers/#_list_of_triggers\n\napoc.conf\napoc.trigger.enabled=true\napoc.trigger.refresh=600\n\nneo4j.conf\ndbms.security.procedures.unrestricted=apoc.*\n\n:use system\nCALL apoc.trigger.install(\n    'neo4j',\n    'send-mqtt-message-when-new-node',\n    'UNWIND $createdNodes AS n WITH n RETURN mqtt.publishMessage(\"neo4jMqttClientId\", \"mqtt/topic/path\", n)',\n    {phase: 'afterAsync'}    \n);\n:use neo4j\n\n// --- test\nCREATE (n:MqttTest)\nRETURN n\n\n\n\n\n\n// --- \nCALL mqtt.publishGrph(\n    'neo4jMqttClientId', \n    'mqtt/topic/path',\n    'MERGE (n:MqttTest) ON CREATE SET n.count=1, n.message=$message ON MATCH SET n.count = n.count +1, n.message=$message RETURN n', \n    {message:123}, \n    {\n        responseTopic:\"mqtt/topic/path/response\",\n        correlationData:\"messageId-123\" \n    }\n)",
+        "info": "// --- Publish MqTT Message \nRETURN mqtt.publishMessage(\n    'neo4jMqttClientId', \n    'mqtt/topic/path', \n    {message:123}\n)\n\n// --- Publish MqTT Message with MqTT V5 options\nRETURN mqtt.publishMessage(\n    'neo4jMqttClientId', \n    'mqtt/topic/path', \n    {message:123}, \n    {\n        responseTopic:\"mqtt/topic/path/response\",\n        correlationData:\"messageId-123\" \n    }\n)\n\n// --- AES-CBC encrypt MqTT payload\nRETURN mqtt.publishMessage(\n    'neo4jMqttClientId', \n    'mqtt/topic/pathEncrypted', \n    {message:123}, \n    {\n        responseTopic:\"mqtt/topic/path/response\", \n        correlationData:\"messageId-123\",\n        encryption: \"aes-cbc\",\n        ivBase64: \"FnAxDoCHpgHkrZr3jRGmbA==\",\n        keyBase64: \"2ggLKL4wxTwmZQ8kPMCT8A==\"\n    }  \n)\n\n\n\n// --- use in Cypher\nWITH {message:\"return messsage\"} AS messageToReturn\nRETURN mqtt.publishMessage('neo4jMqttClientId', 'mqtt/topic/path', messageToReturn)\nMATCH (n) WITH n  RETURN mqtt.publishMessage('neo4jMqttClientId', 'mqtt/topic/path', n)\nMATCH (n) WITH n  RETURN mqtt.publishMessage('neo4jMqttClientId', 'mqtt/topic/path', COLLECT(n))\n\n\n// --- return JSON graph export \nCALL apoc.export.json.query(\n    \"MATCH (u) return u\",\n    null,\n    {stream: true}\n)\nYIELD  data\n//RETURN data\nmqtt.publishMessage('neo4jMqttClientId', 'mqtt/topic/path', data))\n\n// --- trigger\nhttps://neo4j.com/docs/apoc/current/background-operations/triggers/#_list_of_triggers\n\napoc.conf\napoc.trigger.enabled=true\napoc.trigger.refresh=600\n\nneo4j.conf\ndbms.security.procedures.unrestricted=apoc.*\n\n:use system\nCALL apoc.trigger.install(\n    'neo4j',\n    'send-mqtt-message-when-new-node',\n    'UNWIND $createdNodes AS n WITH n RETURN mqtt.publishMessage(\"neo4jMqttClientId\", \"mqtt/topic/path\", n)',\n    {phase: 'afterAsync'}    \n);\n:use neo4j\n\n// --- test\nCREATE (n:MqttTest)\nRETURN n\n\n\n\n\n\n// --- \nCALL mqtt.publishGraph(\n    'neo4jMqttClientId', \n    'mqtt/topic/path',\n    'MERGE (n:MqttTest) ON CREATE SET n.count=1, n.message=$message ON MATCH SET n.count = n.count +1, n.message=$message RETURN n', \n    {message:123}, \n    {\n        responseTopic:\"mqtt/topic/path/response\",\n        correlationData:\"messageId-123\" \n    }\n)",
         "x": 150,
         "y": 160,
         "wires": []
     },
     {
-        "id": "dc5a99a1f190e148",
+        "id": "210b5154c24ec93a",
         "type": "comment",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "MqTT Neo4j plugin",
-        "info": "##  Neo4j DB Dashboard\nhttp://localhost:7474/browser/\n\n\n## Register Neo4j MqTT Client and Connect the MqTT Broker\nCYPHER query\n```cypher\nRETURN mqtt.connectBroker(\n    'neo4jMqttClientId',          // Unique ID of the MqTT Client\n    {\n        serverHost:'localhost',   // MqTT Broker IP Address\n        serverPort:1883           // MqTT Broker Port\n    }\n)\n```\n\n## List Neo4j MqTT Clients/Connections and Show Details\nCYPHER query\n```cypher\nRETURN mqtt.listBrokers()\n```\n\n## Disconnect MqTT Broker and Unregister Neo4j MqTT Client\nCYPHER query\n```cypher\nRETURN mqtt.disconnectBroker(\n  'neo4jMqttClientId'           // Neo4j MqTT Client ID to Disconnect\n)\n```\n# Generate AES-CBC Encryption Key (key) and Initialization Vector (iv)\nNeo4j MqTT broker client supports AES-CBC payload encription. Base64 encoded key and iv is needed. Utility function \"generateAesCbcKeyIv\" will generate 256 AES-CBC key and iv for symetric encription - see examples of using provided keys.\n\nCYPHER query\n```cypher\nRETURN mqtt.generateAesCbcKeyIv()\n```\n\n",
+        "info": "##  Neo4j DB Dashboard\nhttp://localhost:7474/browser/\n\n\n## Register Neo4j MqTT Client and Connect the MqTT Broker\nCYPHER query\n```cypher\nRETURN mqtt.connectBroker(\n    'neo4jMqttClientId',          // Unique ID of the MqTT Client\n    {\n        serverHost:'localhost',   // MqTT Broker IP Address\n        serverPort:1883           // MqTT Broker Port\n    }\n)\n```\n\n## List Neo4j MqTT Clients/Connections and Show Details\nCYPHER query\n```cypher\nRETURN mqtt.listBrokers()\n```\n\n## Disconnect MqTT Broker and Unregister Neo4j MqTT Client\nCYPHER query\n```cypher\nRETURN mqtt.disconnectBroker(\n  'neo4jMqttClientId'           // Neo4j MqTT Client ID to Disconnect\n)\n```\n# Generate AES-CBC Encryption Key (key) and Initialization Vector (iv)\nNeo4j MqTT broker client supports AES-CBC payload encryption. Base64 encoded key and iv is needed. Utility function \"generateAesCbcKeyIv\" will generate 256 AES-CBC key and iv for symetric encryption - see examples of using provided keys.\n\nCYPHER query\n```cypher\nRETURN mqtt.generateAesCbcKeyIv()\n```\n\n",
         "x": 170,
         "y": 40,
         "wires": []
     },
     {
-        "id": "c6b09e6565f14d0e",
+        "id": "723428709c536776",
         "type": "mqtt out",
-        "z": "976b8220983f052f",
-        "d": true,
+        "z": "d1d775e7f07656eb",
         "name": "mqtt no v5 options",
         "topic": "",
         "qos": "",
@@ -1218,14 +1215,14 @@
         "wires": []
     },
     {
-        "id": "04dddfac8a3da43b",
+        "id": "7169620fa7073f2e",
         "type": "mqtt out",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "",
         "topic": "",
         "qos": "",
         "retain": "",
-        "respTopic": "neo4j/cypherQuery/resultsEncripted",
+        "respTopic": "neo4j/cypherQuery/resultsEncrypted",
         "contentType": "",
         "userProps": "",
         "correl": "correlation",
@@ -1236,11 +1233,11 @@
         "wires": []
     },
     {
-        "id": "c7b1b268711b0da9",
+        "id": "f546f60e05da901e",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
-        "name": "mqtt/topic/pathEncripted",
-        "topic": "mqtt/topic/pathEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "mqtt/topic/pathEncrypted",
+        "topic": "mqtt/topic/pathEncrypted",
         "qos": "2",
         "datatype": "auto-detect",
         "broker": "34ef6acb071fe7ef",
@@ -1252,15 +1249,15 @@
         "y": 260,
         "wires": [
             [
-                "5f4891eb89d6b5de",
-                "7b2273d4c5d4fc1d"
+                "eebb8ad33e303142",
+                "d7330915115d44f3"
             ]
         ]
     },
     {
-        "id": "5f4891eb89d6b5de",
+        "id": "eebb8ad33e303142",
         "type": "function",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "base64 to hex + add keyIv",
         "func": "var keyIv = {\n  \"ivBase64\": \"FnAxDoCHpgHkrZr3jRGmbA==\",\n  \"keyHex\": \"da080b28be30c53c26650f243cc093f0\",\n  \"keyBase64\": \"2ggLKL4wxTwmZQ8kPMCT8A==\",\n  \"ivHex\": \"1670310e8087a601e4ad9af78d11a66c\"\n}\n\nreturn {\n    payload: Buffer.from(msg.payload, 'base64').toString('hex'), \n    key: keyIv.keyHex,\n    iv: keyIv.ivHex\n}\n",
         "outputs": 1,
@@ -1273,15 +1270,15 @@
         "y": 280,
         "wires": [
             [
-                "21c38597909a39e9"
+                "eb3a76482aabdc3b"
             ]
         ]
     },
     {
-        "id": "4744b0f30306054a",
+        "id": "101aaa3534fb2a98",
         "type": "debug",
-        "z": "976b8220983f052f",
-        "name": "mqtt/topic/pathEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "mqtt/topic/pathEncrypted",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1295,10 +1292,10 @@
         "wires": []
     },
     {
-        "id": "7b2273d4c5d4fc1d",
+        "id": "d7330915115d44f3",
         "type": "debug",
-        "z": "976b8220983f052f",
-        "name": "mqtt/topic/pathEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "mqtt/topic/pathEncrypted",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1312,9 +1309,9 @@
         "wires": []
     },
     {
-        "id": "034f4ec8893c0dde",
+        "id": "11d17ebdfc03763e",
         "type": "function",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "get key/iv",
         "func": "var keyIv = {\n  \"ivBase64\": \"FnAxDoCHpgHkrZr3jRGmbA==\",\n  \"keyHex\": \"da080b28be30c53c26650f243cc093f0\",\n  \"keyBase64\": \"2ggLKL4wxTwmZQ8kPMCT8A==\",\n  \"ivHex\": \"1670310e8087a601e4ad9af78d11a66c\"\n}\n\nreturn {\n    payload: msg.payload,\n    topic:msg.topic,\n    key: keyIv.keyHex,\n    iv: keyIv.ivHex\n}\n",
         "outputs": 1,
@@ -1327,16 +1324,16 @@
         "y": 580,
         "wires": [
             [
-                "c9e9c37d5df60827"
+                "7b6ae59673a8f5be"
             ]
         ]
     },
     {
-        "id": "029a5607255c6ed0",
+        "id": "9c97d2d9c5c73eef",
         "type": "function",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "to base64",
-        "func": "return {\n    payload: Buffer.from(msg.payload.encrypted, 'hex').toString('base64'),\n    topic: \"neo4j/cypherQuery/requestEncripted\"\n}\n\n   //    encriptedHex: msg.payload.encrypted,\n   //     encriptedBase64: Buffer.from(msg.payload.encrypted, 'hex').toString('base64')\n ",
+        "func": "return {\n    payload: Buffer.from(msg.payload.encrypted, 'hex').toString('base64'),\n    topic: \"neo4j/cypherQuery/requestEncrypted\"\n}\n\n   //    encryptedHex: msg.payload.encrypted,\n   //     encryptedBase64: Buffer.from(msg.payload.encrypted, 'hex').toString('base64')\n ",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -1347,14 +1344,14 @@
         "y": 580,
         "wires": [
             [
-                "04dddfac8a3da43b"
+                "7169620fa7073f2e"
             ]
         ]
     },
     {
-        "id": "d615188c6fb4abe7",
+        "id": "b7ae19b949db4766",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherRun/request",
         "topic": "neo4j/cypherRun/request",
         "qos": "2",
@@ -1364,18 +1361,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 170,
-        "y": 1580,
+        "x": 160,
+        "y": 1520,
         "wires": [
             [
-                "ee8773b94fcb3266"
+                "d8e4efe33ae33e1d"
             ]
         ]
     },
     {
-        "id": "ee8773b94fcb3266",
+        "id": "d8e4efe33ae33e1d",
         "type": "debug",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherRun/request",
         "active": true,
         "tosidebar": true,
@@ -1385,14 +1382,14 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1030,
-        "y": 1580,
+        "x": 1020,
+        "y": 1520,
         "wires": []
     },
     {
-        "id": "0552d50b212af378",
+        "id": "222cbea489d18794",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherRun/results",
         "topic": "neo4j/cypherRun/results",
         "qos": "2",
@@ -1402,18 +1399,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 170,
-        "y": 1760,
+        "x": 150,
+        "y": 1660,
         "wires": [
             [
-                "16cd0e522aca8866"
+                "4656cb08a5a21603"
             ]
         ]
     },
     {
-        "id": "16cd0e522aca8866",
+        "id": "4656cb08a5a21603",
         "type": "debug",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherRun/results",
         "active": true,
         "tosidebar": true,
@@ -1423,14 +1420,14 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1030,
-        "y": 1760,
+        "x": 1010,
+        "y": 1660,
         "wires": []
     },
     {
-        "id": "effebb37bdd06fd7",
+        "id": "ef11ac8549c4c33d",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/request",
         "topic": "neo4j/cypherQuery/request",
         "qos": "2",
@@ -1440,18 +1437,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 200,
+        "x": 190,
         "y": 700,
         "wires": [
             [
-                "81df47f8533e1c7f"
+                "be30c148028244ac"
             ]
         ]
     },
     {
-        "id": "81df47f8533e1c7f",
+        "id": "be30c148028244ac",
         "type": "debug",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "neo4j/cypherQuery/request",
         "active": true,
         "tosidebar": true,
@@ -1466,11 +1463,11 @@
         "wires": []
     },
     {
-        "id": "bb1d0cce136454c8",
+        "id": "adc2c0144e3551a5",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherQuery/requestEncripted",
-        "topic": "neo4j/cypherQuery/requestEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherQuery/requestEncrypted",
+        "topic": "neo4j/cypherQuery/requestEncrypted",
         "qos": "2",
         "datatype": "auto-detect",
         "broker": "34ef6acb071fe7ef",
@@ -1482,15 +1479,15 @@
         "y": 760,
         "wires": [
             [
-                "22024bd2c17c85b1"
+                "6f4329c362960073"
             ]
         ]
     },
     {
-        "id": "22024bd2c17c85b1",
+        "id": "6f4329c362960073",
         "type": "debug",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherQuery/requestEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherQuery/requestEncrypted",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1504,11 +1501,11 @@
         "wires": []
     },
     {
-        "id": "10a4d1d09fa311fa",
+        "id": "493a0db824688b88",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherQuery/resultsEncripted",
-        "topic": "neo4j/cypherQuery/resultsEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherQuery/resultsEncrypted",
+        "topic": "neo4j/cypherQuery/resultsEncrypted",
         "qos": "2",
         "datatype": "auto-detect",
         "broker": "34ef6acb071fe7ef",
@@ -1516,19 +1513,19 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 220,
-        "y": 900,
+        "x": 230,
+        "y": 920,
         "wires": [
             [
-                "41b1e18c5ca02b1a",
-                "15bd79be8b00ba6f"
+                "a3c999b1c4eaab42",
+                "a21b1e2a72247538"
             ]
         ]
     },
     {
-        "id": "41b1e18c5ca02b1a",
+        "id": "a3c999b1c4eaab42",
         "type": "function",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "base64 to hex + add keyIv",
         "func": "var keyIv = {\n  \"ivBase64\": \"FnAxDoCHpgHkrZr3jRGmbA==\",\n  \"keyHex\": \"da080b28be30c53c26650f243cc093f0\",\n  \"keyBase64\": \"2ggLKL4wxTwmZQ8kPMCT8A==\",\n  \"ivHex\": \"1670310e8087a601e4ad9af78d11a66c\"\n}\n\nreturn {\n    payload: Buffer.from(msg.payload, 'base64').toString('hex'), \n    key: keyIv.keyHex,\n    iv: keyIv.ivHex\n}\n",
         "outputs": 1,
@@ -1537,19 +1534,19 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 540,
-        "y": 920,
+        "x": 530,
+        "y": 940,
         "wires": [
             [
-                "ef1d6f2e739586a0"
+                "c3476018995497d1"
             ]
         ]
     },
     {
-        "id": "d19b9de01758a4ca",
+        "id": "d90d9dae0d046902",
         "type": "debug",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherQuery/resultsEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherQuery/resultsEncrypted",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1558,33 +1555,33 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1020,
+        "x": 1010,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "a21b1e2a72247538",
+        "type": "debug",
+        "z": "d1d775e7f07656eb",
+        "name": "mqtt/topic/pathEncrypted",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
         "y": 900,
         "wires": []
     },
     {
-        "id": "15bd79be8b00ba6f",
-        "type": "debug",
-        "z": "976b8220983f052f",
-        "name": "mqtt/topic/pathEncripted",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 530,
-        "y": 880,
-        "wires": []
-    },
-    {
-        "id": "ee2c1e71fd08e132",
+        "id": "5b919959e93d7b55",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherRun/requestEncripted",
-        "topic": "neo4j/cypherRun/requestEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherRun/requestEncrypted",
+        "topic": "neo4j/cypherRun/requestEncrypted",
         "qos": "2",
         "datatype": "auto-detect",
         "broker": "34ef6acb071fe7ef",
@@ -1593,18 +1590,18 @@
         "rh": 0,
         "inputs": 0,
         "x": 200,
-        "y": 1640,
+        "y": 1580,
         "wires": [
             [
-                "1dbb7ef496bf5a05"
+                "fea71f859f3973dd"
             ]
         ]
     },
     {
-        "id": "1dbb7ef496bf5a05",
+        "id": "fea71f859f3973dd",
         "type": "debug",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherRun/requestEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherRun/requestEncrypted",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1613,19 +1610,19 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1000,
-        "y": 1640,
+        "x": 990,
+        "y": 1580,
         "wires": []
     },
     {
-        "id": "a95341a1039ca2ce",
+        "id": "de9b476c5c147679",
         "type": "mqtt out",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "",
         "topic": "",
         "qos": "",
         "retain": "",
-        "respTopic": "neo4j/cypherRun/resultsEncripted",
+        "respTopic": "neo4j/cypherRun/resultsEncrypted",
         "contentType": "",
         "userProps": "",
         "correl": "correlation",
@@ -1636,9 +1633,9 @@
         "wires": []
     },
     {
-        "id": "b6e204095a4f9314",
+        "id": "ae71121570d5231b",
         "type": "function",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "get key/iv",
         "func": "var keyIv = {\n  \"ivBase64\": \"FnAxDoCHpgHkrZr3jRGmbA==\",\n  \"keyHex\": \"da080b28be30c53c26650f243cc093f0\",\n  \"keyBase64\": \"2ggLKL4wxTwmZQ8kPMCT8A==\",\n  \"ivHex\": \"1670310e8087a601e4ad9af78d11a66c\"\n}\n\nreturn {\n    payload: msg.payload,\n    topic:msg.topic,\n    key: keyIv.keyHex,\n    iv: keyIv.ivHex\n}\n",
         "outputs": 1,
@@ -1651,16 +1648,16 @@
         "y": 1420,
         "wires": [
             [
-                "c95eb8f31184223a"
+                "65e9d29cf56b8fc4"
             ]
         ]
     },
     {
-        "id": "bddcd123cb96f0d0",
+        "id": "a945ad5c396be87c",
         "type": "function",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "to base64",
-        "func": "return {\n    payload: Buffer.from(msg.payload.encrypted, 'hex').toString('base64'),\n    topic: \"neo4j/cypherQuery/requestEncripted\"\n}\n\n   //    encriptedHex: msg.payload.encrypted,\n   //     encriptedBase64: Buffer.from(msg.payload.encrypted, 'hex').toString('base64')\n ",
+        "func": "return {\n    payload: Buffer.from(msg.payload.encrypted, 'hex').toString('base64'),\n    topic: \"neo4j/cypherRun/requestEncrypted\"\n}\n\n   //    encryptedHex: msg.payload.encrypted,\n   //     encryptedBase64: Buffer.from(msg.payload.encrypted, 'hex').toString('base64')\n ",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -1671,15 +1668,14 @@
         "y": 1420,
         "wires": [
             [
-                "a95341a1039ca2ce"
+                "de9b476c5c147679"
             ]
         ]
     },
     {
-        "id": "6b87aa6409a6f005",
+        "id": "6e77eb2c7d243a7b",
         "type": "mqtt out",
-        "z": "976b8220983f052f",
-        "d": true,
+        "z": "d1d775e7f07656eb",
         "name": "mqtt with v5 options",
         "topic": "",
         "qos": "",
@@ -1695,11 +1691,11 @@
         "wires": []
     },
     {
-        "id": "2551ae36dc15df81",
+        "id": "839c263db350afe2",
         "type": "mqtt in",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherRun/resultsEncripted",
-        "topic": "neo4j/cypherRun/resultsEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherRun/resultsEncrypted",
+        "topic": "neo4j/cypherRun/resultsEncrypted",
         "qos": "2",
         "datatype": "auto-detect",
         "broker": "34ef6acb071fe7ef",
@@ -1707,19 +1703,19 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 190,
-        "y": 1820,
+        "x": 180,
+        "y": 1720,
         "wires": [
             [
-                "a3815251e1b9f9b3",
-                "d89f47fb34f88f34"
+                "3a868115a8fa2989",
+                "7b5f0c080fd057af"
             ]
         ]
     },
     {
-        "id": "a3815251e1b9f9b3",
+        "id": "3a868115a8fa2989",
         "type": "function",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "base64 to hex + add keyIv",
         "func": "var keyIv = {\n  \"ivBase64\": \"FnAxDoCHpgHkrZr3jRGmbA==\",\n  \"keyHex\": \"da080b28be30c53c26650f243cc093f0\",\n  \"keyBase64\": \"2ggLKL4wxTwmZQ8kPMCT8A==\",\n  \"ivHex\": \"1670310e8087a601e4ad9af78d11a66c\"\n}\n\nreturn {\n    payload: Buffer.from(msg.payload, 'base64').toString('hex'), \n    key: keyIv.keyHex,\n    iv: keyIv.ivHex\n}\n",
         "outputs": 1,
@@ -1728,19 +1724,19 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 500,
-        "y": 1840,
+        "x": 480,
+        "y": 1740,
         "wires": [
             [
-                "e6ce25de6954277d"
+                "46d6af0f769cc7e7"
             ]
         ]
     },
     {
-        "id": "21e2fc1332365c35",
+        "id": "a4bc865a534c3a6b",
         "type": "debug",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherRun/resultsEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherRun/resultsEncrypted",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1749,15 +1745,15 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1000,
-        "y": 1820,
+        "x": 980,
+        "y": 1720,
         "wires": []
     },
     {
-        "id": "d89f47fb34f88f34",
+        "id": "7b5f0c080fd057af",
         "type": "debug",
-        "z": "976b8220983f052f",
-        "name": "neo4j/cypherRun/resultsEncripted",
+        "z": "d1d775e7f07656eb",
+        "name": "neo4j/cypherRun/resultsEncrypted",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1766,14 +1762,14 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 520,
-        "y": 1800,
+        "x": 490,
+        "y": 1700,
         "wires": []
     },
     {
-        "id": "21c38597909a39e9",
+        "id": "eb3a76482aabdc3b",
         "type": "cipher",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "",
         "function": "Decrypt",
         "algorithm": "AES-CBC",
@@ -1785,15 +1781,15 @@
         "y": 260,
         "wires": [
             [
-                "4744b0f30306054a"
+                "101aaa3534fb2a98"
             ]
         ]
     },
     {
-        "id": "c9e9c37d5df60827",
+        "id": "7b6ae59673a8f5be",
         "type": "cipher",
-        "z": "976b8220983f052f",
-        "name": "encript",
+        "z": "d1d775e7f07656eb",
+        "name": "encrypt",
         "function": "Encrypt",
         "algorithm": "AES-CBC",
         "iv": "",
@@ -1804,14 +1800,14 @@
         "y": 580,
         "wires": [
             [
-                "029a5607255c6ed0"
+                "9c97d2d9c5c73eef"
             ]
         ]
     },
     {
-        "id": "ef1d6f2e739586a0",
+        "id": "c3476018995497d1",
         "type": "cipher",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "",
         "function": "Decrypt",
         "algorithm": "AES-CBC",
@@ -1819,19 +1815,19 @@
         "key": "",
         "ivSize": "32",
         "keySize": "16",
-        "x": 760,
-        "y": 900,
+        "x": 750,
+        "y": 920,
         "wires": [
             [
-                "d19b9de01758a4ca"
+                "d90d9dae0d046902"
             ]
         ]
     },
     {
-        "id": "c95eb8f31184223a",
+        "id": "65e9d29cf56b8fc4",
         "type": "cipher",
-        "z": "976b8220983f052f",
-        "name": "encript",
+        "z": "d1d775e7f07656eb",
+        "name": "encrypt",
         "function": "Encrypt",
         "algorithm": "AES-CBC",
         "iv": "",
@@ -1842,14 +1838,14 @@
         "y": 1420,
         "wires": [
             [
-                "bddcd123cb96f0d0"
+                "a945ad5c396be87c"
             ]
         ]
     },
     {
-        "id": "e6ce25de6954277d",
+        "id": "46d6af0f769cc7e7",
         "type": "cipher",
-        "z": "976b8220983f052f",
+        "z": "d1d775e7f07656eb",
         "name": "",
         "function": "Decrypt",
         "algorithm": "AES-CBC",
@@ -1857,11 +1853,11 @@
         "key": "",
         "ivSize": "32",
         "keySize": "16",
-        "x": 760,
-        "y": 1820,
+        "x": 740,
+        "y": 1720,
         "wires": [
             [
-                "21e2fc1332365c35"
+                "a4bc865a534c3a6b"
             ]
         ]
     }

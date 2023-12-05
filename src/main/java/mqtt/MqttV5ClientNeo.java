@@ -37,7 +37,7 @@ public class MqttV5ClientNeo {
     public MqttV5ClientNeo(Map<String, Object> mqttConnectOptions, Log logIn) {
         log = logIn;
 
-        // --- check - set mqtt connection dafaults
+        // --- check - set mqtt connection defaults
         if (!mqttConnectOptions.containsKey("serverHost")) {
             mqttConnectOptions.put("serverHost", "localhost");
         }
@@ -83,8 +83,8 @@ public class MqttV5ClientNeo {
     }
 
     public boolean isBrokerConnected() {
-        String brokerconnectionState = neo4jMqttClient.getState().toString();
-        if (brokerconnectionState == "CONNECTED") {
+        String brokerConnectionState = neo4jMqttClient.getState().toString();
+        if (brokerConnectionState == "CONNECTED") {
             return true;
         } else {
             return false;
@@ -106,7 +106,6 @@ public class MqttV5ClientNeo {
         Mqtt5PublishBuilder.Complete publishBuilder = Mqtt5Publish.builder()
                 .topic(topic)
                 .payload(payload.getBytes());
-
         // --- create userProperties and add to userProperties
         Mqtt5UserPropertiesBuilder userPropertiesBuilder = Mqtt5UserProperties.builder();
         for (Map.Entry<String, Object> entry : userPropertiesMap.entrySet()) {
@@ -123,7 +122,7 @@ public class MqttV5ClientNeo {
         }
         Mqtt5Publish publish = publishBuilder.build();
         // --- publish and get status
-        boolean publisFailStatus = neo4jMqttClient.publish(publish)
+        boolean publishFailStatus = neo4jMqttClient.publish(publish)
                 .whenComplete((publishResult, throwable) -> {
                     if (throwable != null) {
                         log.error("mqtt - MqttV5ClientNeo: publishMessage ERROR - " + neo4jMqttClientId + " " + throwable);
@@ -132,38 +131,8 @@ public class MqttV5ClientNeo {
                     }
                 }).isCompletedExceptionally();
         // --- return status
-        return !publisFailStatus;
+        return !publishFailStatus;
     }
-
-/*     public boolean publish(String topic, String payload, Map<String, Object> userPropertiesMap) {
-        // --- get broker id
-        String neo4jMqttClientId = neo4jMqttClient.getConfig().getClientIdentifier().toString();
-        // --- start building Mqtt5Publish object
-        Mqtt5PublishBuilder.Complete publishBuilder = Mqtt5Publish.builder()
-                .topic(topic)
-                .payload(payload.getBytes());
-
-        // --- create userProperties and add to userProperties
-        Mqtt5UserPropertiesBuilder userPropertiesBuilder = Mqtt5UserProperties.builder();
-        for (Map.Entry<String, Object> entry : userPropertiesMap.entrySet()) {
-            userPropertiesBuilder.add(entry.getKey(), entry.getValue().toString());
-        }
-        Mqtt5UserProperties userProperties = userPropertiesBuilder.build();
-        publishBuilder.userProperties(userProperties);
-
-        Mqtt5Publish publish = publishBuilder.build();
-        // --- publish and get status
-        boolean publisFailStatus = neo4jMqttClient.publish(publish)
-                .whenComplete((publishResult, throwable) -> {
-                    if (throwable != null) {
-                        log.error("mqtt - MqttV5ClientNeo: publishMessage ERROR - " + neo4jMqttClientId + " " + throwable);
-                    } else {
-                        log.info("mqtt - MqttV5ClientNeo: publishMessage OK - " + neo4jMqttClientId + " " + publishResult);
-                    }
-                }).isCompletedExceptionally();
-        // --- return status
-        return !publisFailStatus;
-    } */
 
     public boolean subscribe(String topic, ProcessMqttMessage task) { //
         String neo4jMqttClientId = neo4jMqttClient.getConfig().getClientIdentifier().toString();
@@ -172,12 +141,12 @@ public class MqttV5ClientNeo {
         boolean subscribeFailStatus = neo4jMqttClient.subscribeWith()
                 .topicFilter(topic)
                 .callback(message -> {
-                    // --- return object is mqttMesageObject
-                    Map<String, Object> mqttMesageObject = new HashMap<String, Object>();
+                    // --- return object is mqttMessageObject
+                    Map<String, Object> mqttMessageObject = new HashMap<String, Object>();
                     // --- get payload
                     byte[] messagePayloadByte = message.getPayloadAsBytes();
                     String messagePayloadString = new String(messagePayloadByte);
-                    mqttMesageObject.put("payload", messagePayloadString);
+                    mqttMessageObject.put("payload", messagePayloadString);
                     // --- get userProperties
                     Mqtt5UserProperties userProperties = message.getUserProperties();
                     List<Mqtt5UserProperty> userPropertyList = (List<Mqtt5UserProperty>) userProperties.asList();
@@ -187,18 +156,18 @@ public class MqttV5ClientNeo {
                         String value = (String) userProperty.getValue().toString();
                         userPropertyMap.put(name, value);
                     }
-                    mqttMesageObject.put("userProperties", userPropertyMap);
+                    mqttMessageObject.put("userProperties", userPropertyMap);
                     // --- ger response topic
                     Optional<MqttTopic> responseTopicMqtt = message.getResponseTopic();
-                    responseTopicMqtt.ifPresent(string -> mqttMesageObject.put("responseTopic", string.toString()));
+                    responseTopicMqtt.ifPresent(string -> mqttMessageObject.put("responseTopic", string.toString()));
                     // --- get correlationData
                     Optional<ByteBuffer> correlationData = message.getCorrelationData();
                     Optional<String> correlationString = correlationData
                             .map(buffer -> StandardCharsets.UTF_8.decode(buffer).toString());
-                    correlationString.ifPresent(string -> mqttMesageObject.put("correlationData", string));
+                    correlationString.ifPresent(string -> mqttMessageObject.put("correlationData", string));
                     // --- print
-                    log.info("mqtt - MqttV5ClientNeo: mqtt message received - " + neo4jMqttClientId + " " + topic + " "+ mqttMesageObject.toString());
-                    task.run(topic, mqttMesageObject);
+                    log.info("mqtt - MqttV5ClientNeo: mqtt message received - " + neo4jMqttClientId + " " + topic + " "+ mqttMessageObject.toString());
+                    task.run(topic, mqttMessageObject);
                 })
                 .send()
                 .whenComplete((subAck, throwable) -> {

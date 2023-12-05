@@ -45,7 +45,7 @@ public class ProcessMqttMessage {
     public Log log;
     public GraphDatabaseService db;
     MqttV5ClientNeo mqttBrokerNeo4jClient;
-    private static AesCbcCriptDecript aesCbcCriptDecript = new AesCbcCriptDecript();
+    private static AesCbcCryptDecrypt AesCbcCryptDecrypt = new AesCbcCryptDecrypt();
 
     public ProcessMqttMessage(GraphDatabaseService dbIn, MqttV5ClientNeo mqttBrokerNeo4jClientIn,
             Map<String, Object> optionsIn, Log logIn) {
@@ -57,36 +57,36 @@ public class ProcessMqttMessage {
         log.info("mqtt - ProcessMqttMessage registration: " + options.toString());
     }
 
-    public void run(String topic, Map<String, Object> mqttMesageObject) {
-        log.debug("mqtt - ProcessMqttMessage: run request received - " + mqttMesageObject);
+    public void run(String topic, Map<String, Object> mqttMessageObject) {
+        log.debug("mqtt - ProcessMqttMessage: run request received - " + mqttMessageObject);
         // --- get data from mqtt message
-        String message = (String) mqttMesageObject.get("payload");
-        // --- encription required?
-        if (!options.containsKey("encription")) {
-            options.put("encription", "none");
+        String message = (String) mqttMessageObject.get("payload");
+        // --- encryption required?
+        if (!options.containsKey("encryption")) {
+            options.put("encryption", "none");
         }
         // --- decrypt message
-        if ((boolean) options.get("encription").equals("aes-cbc")) {
+        if ((boolean) options.get("encryption").equals("aes-cbc")) {
             try {
-                message = aesCbcCriptDecript.decrypt(message, (String) options.get("keyBase64"),
+                message = AesCbcCryptDecrypt.decrypt(message, (String) options.get("keyBase64"),
                         (String) options.get("ivBase64"));
-                log.info("mqtt - ProcessMqttMessage:  aesCbcCriptDecript decrypt OK ");
+                log.info("mqtt - ProcessMqttMessage:  AesCbcCryptDecrypt decrypt OK ");
             } catch (Exception ex) {
-                log.error("mqtt - ProcessMqttMessage: aesCbcCriptDecript  ERROR " + ex);
-                message = "{\"query\":\"aesCbcCriptDecript error\"}";
+                log.error("mqtt - ProcessMqttMessage: AesCbcCryptDecrypt  ERROR " + ex);
+                message = "{\"query\":\"AesCbcCryptDecrypt error\"}";
             }
         } else {
-            log.info("mqtt - ProcessMqttMessage: message not encripted - or unknown encription ");
+            log.info("mqtt - ProcessMqttMessage: message not encrypted - or unknown encryption ");
         }
         // --- debug message
         log.debug("mqtt - ProcessMqttMessage:   " + message + " " + subscribeOptions);
         // --- user props
-        Map<String, Object> userProperties = (Map<String, Object>) mqttMesageObject.get("userProperties");
+        Map<String, Object> userProperties = (Map<String, Object>) mqttMessageObject.get("userProperties");
         // --- get response topic - use default
-        String responseTopic = getValueOrDefault((String) mqttMesageObject.get("responseTopic"),
+        String responseTopic = getValueOrDefault((String) mqttMessageObject.get("responseTopic"),
                 (String) subscribeOptions.get("responseTopicDefault"));
         // --- set correlation data
-        String correlationData = getValueOrDefault((String) mqttMesageObject.get("correlationData"), "");
+        String correlationData = getValueOrDefault((String) mqttMessageObject.get("correlationData"), "");
         // ---
         subscribeOptions.remove("lastMessageProcessedResults");
         log.info("mqtt - ProcessMqttMessage run: " + subscribeOptions.toString());
@@ -100,11 +100,11 @@ public class ProcessMqttMessage {
         Map<String, Object> cypherParams = new HashMap<String, Object>();
 
         // --- get cypherQuery, cypherParams and responseTopic based on
-        if (subscribeOptions.get("subsctiption") == "subscribeCypherRun") {
+        if (subscribeOptions.get("subscription") == "subscribeCypherRun") {
             cypherQuery = (String) subscribeOptions.get("query");
             cypherParams = messageJson;
             log.info("mqtt - ProcessMqttMessage subscribeCypherRun ... ");
-        } else if (subscribeOptions.get("subsctiption") == "subscribeCypherQuery") {
+        } else if (subscribeOptions.get("subscription") == "subscribeCypherQuery") {
             cypherQuery = getValueOrDefault((String) messageJson.get("query"), "no cypher query provided");
             cypherParams = getValueOrDefault((Map<String, Object>) messageJson.get("params"), new HashMap<>());
             log.info("mqtt - ProcessMqttMessage subscribeCypherQuery ... ");
@@ -115,30 +115,30 @@ public class ProcessMqttMessage {
             log.error("mqtt - ProcessMqttMessage: ERROR unknown subscription type");
         }
 
-        // --- setup response objects - graph + cypherQuerMetadata
+        // --- setup response objects - graph + cypherQueryMetadata
         List<Map<String, Object>> nodes = new ArrayList<>();
         List<Map<String, Object>> relationships = new ArrayList<>();
         Map<String, Object> dbResultObjectFinal = new HashMap<>();
-        Map<String, Object> cypherQuerMetadata = new HashMap<>();
+        Map<String, Object> cypherQueryMetadata = new HashMap<>();
         Map<String, Object> graph = new HashMap<>();
         // --- add nodes relations to graph
         graph.put("relationships", relationships);
         graph.put("nodes", nodes);
-        // --- add cypherQuerMetadata and graph to result object
+        // --- add cypherQueryMetadata and graph to result object
         dbResultObjectFinal.put("@graph", graph);
         // --- set metadata
-        cypherQuerMetadata.put("neo4jMqttClientId", subscribeOptions.get("neo4jMqttClientId"));
-        cypherQuerMetadata.put("subsctiptionType", subscribeOptions.get("subsctiption"));
-        cypherQuerMetadata.put("requesTopic", topic);
-        cypherQuerMetadata.put("responseTopic", responseTopic);
-        cypherQuerMetadata.put("databaseName", db.databaseName());
-        cypherQuerMetadata.put("correlationData", correlationData);
+        cypherQueryMetadata.put("neo4jMqttClientId", subscribeOptions.get("neo4jMqttClientId"));
+        cypherQueryMetadata.put("subscriptionType", subscribeOptions.get("subscription"));
+        cypherQueryMetadata.put("requestTopic", topic);
+        cypherQueryMetadata.put("responseTopic", responseTopic);
+        cypherQueryMetadata.put("databaseName", db.databaseName());
+        cypherQueryMetadata.put("correlationData", correlationData);
 
-        cypherQuerMetadata.put("cypherQuery", cypherQuery);
-        cypherQuerMetadata.put("cypherParams", cypherParams);
-        cypherQuerMetadata.put("relationships", 0);
-        cypherQuerMetadata.put("nodes", 0);
-        // cypherQuerMetadata.put("graph", graph);
+        cypherQueryMetadata.put("cypherQuery", cypherQuery);
+        cypherQueryMetadata.put("cypherParams", cypherParams);
+        cypherQueryMetadata.put("relationships", 0);
+        cypherQueryMetadata.put("nodes", 0);
+        // cypherQueryMetadata.put("graph", graph);
 
         try (Transaction tx = db.beginTx()) {
             log.debug("mqtt - ProcessMqttMessage: Transaction beginTx");
@@ -169,13 +169,13 @@ public class ProcessMqttMessage {
                         if (row.get(key) instanceof Node) {
                             Node node = (Node) row.get(key);
                             Map<String, Object> dbResultObject = nodeToMap(db, node);
-                            cypherQuerMetadata.put("nodes", (int) cypherQuerMetadata.get("nodes") + 1);
+                            cypherQueryMetadata.put("nodes", (int) cypherQueryMetadata.get("nodes") + 1);
                             nodes.add(dbResultObject);
                             keyValues.add(dbResultObject);
                         } else if (row.get(key) instanceof Relationship) {
                             Relationship link = (Relationship) row.get(key);
                             Map<String, Object> dbResultObject = relationToMap(db, link);
-                            cypherQuerMetadata.put("relationships", (int) cypherQuerMetadata.get("relationships") + 1);
+                            cypherQueryMetadata.put("relationships", (int) cypherQueryMetadata.get("relationships") + 1);
                             relationships.add(dbResultObject);
                             keyValues.add(dbResultObject);
                         } else if (row.get(key) instanceof Map) {
@@ -189,14 +189,14 @@ public class ProcessMqttMessage {
             }
             tx.commit();
             // --- set status
-            cypherQuerMetadata.put("cypherQueryStatus", "OK");
+            cypherQueryMetadata.put("cypherQueryStatus", "OK");
             // --- statistics
             subscribeOptions.put("messageReceivedOk", (int) subscribeOptions.get("messageReceivedOk") + 1);
             subscribeOptions.put("lastMessageReceived", message.toString());
             // --- log
             String lastMessageProcessedResults = "mqtt - ProcessMqttMessage "
                     + "\n neo4jMqttClientId: " + subscribeOptions.get("neo4jMqttClientId")
-                    + "\n toppicRequest: " + topic
+                    + "\n topicRequest: " + topic
                     + "\n responseTopic: " + responseTopic
                     + "\n message: " + message.toString()
                     + "\n cypherQuery: \n " + subscribeOptions.get("query")
@@ -208,8 +208,8 @@ public class ProcessMqttMessage {
         } catch (Exception ex) {
             // --- setup dbResultObjectFinal object
             dbResultObjectFinal.put("error", ex.toString());
-            // --- setup cypherQuerMetadata object
-            cypherQuerMetadata.put("cypherQueryStatus", "ERROR");
+            // --- setup cypherQueryMetadata object
+            cypherQueryMetadata.put("cypherQueryStatus", "ERROR");
             // --- statistics
             subscribeOptions.put("messageReceivedError", (int) subscribeOptions.get("messageReceivedError") + 1);
             subscribeOptions.put("lastMessageReceived", message.toString());
@@ -217,7 +217,7 @@ public class ProcessMqttMessage {
             // --- log
             String lastMessageProcessedResults = "mqtt - ProcessMqttMessage "
                     + "\n neo4jMqttClientId: " + subscribeOptions.get("neo4jMqttClientId")
-                    + "\n toppicRequest: " + topic
+                    + "\n topicRequest: " + topic
                     + "\n responseTopic: " + responseTopic
                     + "\n message: " + message.toString()
                     + "\n cypherQuery: \n " + subscribeOptions.get("query")
@@ -234,20 +234,20 @@ public class ProcessMqttMessage {
                 ObjectMapper mapper = new ObjectMapper();
                 String dbResultString = mapper.writeValueAsString(dbResultObjectFinal).toString();
 
-                // --- encript message and remove metadata
-                String encriptionRequest = (String) options.get("encription");
-                if (encriptionRequest.equals("aes-cbc")) {
-                    dbResultString = aesCbcCriptDecript.encript(dbResultString, (String) options.get("keyBase64"),
+                // --- encrypt message and remove metadata
+                String encryptionRequest = (String) options.get("encryption");
+                if (encryptionRequest.equals("aes-cbc")) {
+                    dbResultString = AesCbcCryptDecrypt.encrypt(dbResultString, (String) options.get("keyBase64"),
                             (String) options.get("ivBase64"));
-                    cypherQuerMetadata = new HashMap<>();
-                    log.info("mqtt . ProcessMqttMessage  encripting : ");
+                    cypherQueryMetadata = new HashMap<>();
+                    log.info("mqtt . ProcessMqttMessage  encrypting : ");
                 }
 
                 Map<String, Object> mqttPublishOptionsMap = new HashMap();
                 if (correlationData != "") {
                     mqttPublishOptionsMap.put("correlationData", correlationData);
                 }
-                mqttBrokerNeo4jClient.publish((String) responseTopic, (String) dbResultString, cypherQuerMetadata,
+                mqttBrokerNeo4jClient.publish((String) responseTopic, (String) dbResultString, cypherQueryMetadata,
                         mqttPublishOptionsMap);
                 log.info("mqtt - ProcessMqttMessage: MqTT message send OK");
 
@@ -286,9 +286,9 @@ public class ProcessMqttMessage {
         Map<String, Object> dbResultObject = new HashMap<>();
         dbResultObject.put("identity", (int) ((Relationship) link).getId());
         dbResultObject.put("end", (int) ((Relationship) link).getEndNodeId());
-        dbResultObject.put("strt", (int) ((Relationship) link).getStartNodeId());
+        dbResultObject.put("start", (int) ((Relationship) link).getStartNodeId());
         dbResultObject.put("elementId", (String) ((Relationship) link).getElementId());
-        dbResultObject.put("satartElementId", (String) ((Relationship) link).getStartNode().getElementId());
+        dbResultObject.put("startElementId", (String) ((Relationship) link).getStartNode().getElementId());
         dbResultObject.put("endElementId", (String) ((Relationship) link).getEndNode().getElementId());
         dbResultObject.put("type", (String) ((Relationship) link).getType().toString());
         dbResultObject.put("properties", (Map<String, Object>) ((Relationship) link).getAllProperties());
